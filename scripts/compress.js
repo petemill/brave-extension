@@ -20,12 +20,15 @@ crx.load('build')
   .then(() => crx.loadContents())
   .then((archiveBuffer) => {
     fs.writeFile(`${name}.zip`, archiveBuffer)
-
+    console.log(`Wrote ${name}.zip`)
     if (!argv.codebase || !existsKey) return
     crx.pack(archiveBuffer).then((crxBuffer) => {
       const updateXML = crx.generateUpdateXML()
 
       fs.writeFile('update.xml', updateXML)
+      console.log(`Wrote update.xml`)
       fs.writeFile(`${name}.crx`, crxBuffer)
+      console.log(`Wrote ${name}.crx`)
     })
   })
+  .catch(e => console.error(e))
